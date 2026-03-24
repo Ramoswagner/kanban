@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "title": "Navega Baleia — Portfólio Estratégico",
+    "description": "Exemplo de uso do Kanban para gestão de projetos estratégicos do Hospital da Baleia.",
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  "columns": [
+    { "id": "backlog",  "title": "Backlog",         "wipLimit": 0, "color": "#6366f1", "order": 0 },
+    { "id": "todo",     "title": "A Fazer",          "wipLimit": 6, "color": "#d4a843", "order": 1 },
+    { "id": "doing",    "title": "Em Andamento",     "wipLimit": 3, "color": "#3b82f6", "order": 2 },
+    { "id": "review",   "title": "Em Revisão",       "wipLimit": 2, "color": "#a855f7", "order": 3 },
+    { "id": "done",     "title": "Concluído",        "wipLimit": 0, "color": "#22c55e", "order": 4 }
+  ],
+  "cards": [
+    {
+      "id": "c01", "columnId": "backlog",
+      "title": "Mapear fluxo de atendimento SUS",
+      "description": "Levantar as etapas desde a triagem até a alta, identificando gargalos e tempos de espera.",
+      "priority": "high", "assignee": "Ana Lima",
+      "dueDate": "2025-03-15", "tags": ["processo","SUS","mapeamento"],
+      "order": 0, "createdAt": "2025-01-10T09:00:00.000Z", "updatedAt": "2025-01-10T09:00:00.000Z"
+    },
+    {
+      "id": "c02", "columnId": "backlog",
+      "title": "Definir KPIs do programa Navega Baleia",
+      "description": "Estabelecer indicadores de resultado, processo e estrutura para cada projeto do portfólio.",
+      "priority": "high", "assignee": "Wagner",
+      "dueDate": "", "tags": ["indicadores","portfólio"],
+      "order": 1, "createdAt": "2025-01-10T09:00:00.000Z", "updatedAt": "2025-01-10T09:00:00.000Z"
+    },
+    {
+      "id": "c03", "columnId": "backlog",
+      "title": "Avaliar viabilidade de nova UDC",
+      "description": "Análise técnica e financeira para expansão da Unidade de Diagnóstico Complementar.",
+      "priority": "medium", "assignee": "",
+      "dueDate": "", "tags": ["NOVA UDC","viabilidade"],
+      "order": 2, "createdAt": "2025-01-10T09:00:00.000Z", "updatedAt": "2025-01-10T09:00:00.000Z"
+    },
+    {
+      "id": "c04", "columnId": "todo",
+      "title": "Agendar kickoff LEAN do Bloco Cirúrgico",
+      "description": "Confirmar presença de toda a equipe multidisciplinar e reservar sala de reunião.",
+      "priority": "high", "assignee": "Wagner",
+      "dueDate": "2025-02-05", "tags": ["LEAN","reunião","bloco cirúrgico"],
+      "order": 0, "createdAt": "2025-01-12T10:00:00.000Z", "updatedAt": "2025-01-12T10:00:00.000Z"
+    },
+    {
+      "id": "c05", "columnId": "todo",
+      "title": "Elaborar template de relatório mensal do portfólio",
+      "description": "",
+      "priority": "medium", "assignee": "Carlos M.",
+      "dueDate": "", "tags": ["documentação","PMO"],
+      "order": 1, "createdAt": "2025-01-13T10:00:00.000Z", "updatedAt": "2025-01-13T10:00:00.000Z"
+    },
+    {
+      "id": "c06", "columnId": "todo",
+      "title": "Atualizar cronograma mestre BG SAÚDE",
+      "description": "Revisar baseline após mudanças de escopo aprovadas na última reunião de steering.",
+      "priority": "high", "assignee": "Wagner",
+      "dueDate": "2025-02-10", "tags": ["BG SAÚDE","cronograma"],
+      "order": 2, "createdAt": "2025-01-14T10:00:00.000Z", "updatedAt": "2025-01-14T10:00:00.000Z"
+    },
+    {
+      "id": "c07", "columnId": "doing",
+      "title": "Análise de stakeholders — 100% SUS",
+      "description": "Mapear interesse, influência e expectativas de cada parte interessada no projeto 100% SUS.",
+      "priority": "critical", "assignee": "Wagner",
+      "dueDate": "2025-01-31", "tags": ["100% SUS","stakeholders","estratégia"],
+      "order": 0, "createdAt": "2025-01-15T08:00:00.000Z", "updatedAt": "2025-01-20T14:00:00.000Z"
+    },
+    {
+      "id": "c08", "columnId": "doing",
+      "title": "Diagnóstico de capacidade cirúrgica",
+      "description": "Levantar dados de salas, turnos, tempos de ciclo e taxa de cancelamento.",
+      "priority": "high", "assignee": "Dr. Felipe",
+      "dueDate": "2025-02-15", "tags": ["LEAN","bloco cirúrgico","dados"],
+      "order": 1, "createdAt": "2025-01-16T08:00:00.000Z", "updatedAt": "2025-01-18T09:00:00.000Z"
+    },
+    {
+      "id": "c09", "columnId": "review",
+      "title": "Proposta de identidade visual — Branding 2026",
+      "description": "Apresentar três conceitos de marca para aprovação da diretoria de comunicação.",
+      "priority": "medium", "assignee": "Julia Arts",
+      "dueDate": "2025-01-28", "tags": ["Branding 2026","identidade visual","comunicação"],
+      "order": 0, "createdAt": "2025-01-10T08:00:00.000Z", "updatedAt": "2025-01-22T16:00:00.000Z"
+    },
+    {
+      "id": "c10", "columnId": "review",
+      "title": "Revisão do EAP do projeto CICLYS",
+      "description": "Validar estrutura analítica de projeto com gerente funcional antes da aprovação final.",
+      "priority": "high", "assignee": "Wagner",
+      "dueDate": "2025-01-30", "tags": ["CICLYS","EAP","revisão"],
+      "order": 1, "createdAt": "2025-01-14T08:00:00.000Z", "updatedAt": "2025-01-21T11:00:00.000Z"
+    },
+    {
+      "id": "c11", "columnId": "done",
+      "title": "Termo de abertura — CICLYS",
+      "description": "TAP assinado e arquivado. Projeto oficialmente iniciado.",
+      "priority": "high", "assignee": "Wagner",
+      "dueDate": "", "tags": ["CICLYS","TAP","aprovado"],
+      "order": 0, "createdAt": "2024-12-01T08:00:00.000Z", "updatedAt": "2024-12-15T17:00:00.000Z"
+    },
+    {
+      "id": "c12", "columnId": "done",
+      "title": "Apresentação do portfólio para diretoria",
+      "description": "Todos os projetos estratégicos apresentados e aprovados para 2025.",
+      "priority": "critical", "assignee": "Wagner",
+      "dueDate": "", "tags": ["portfólio","aprovação","diretoria"],
+      "order": 1, "createdAt": "2024-11-20T08:00:00.000Z", "updatedAt": "2024-12-10T18:00:00.000Z"
+    }
+  ]
+}

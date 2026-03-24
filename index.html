@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanban Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header id="header">
+  <div class="header-left">
+    <div class="logo">
+      <span class="logo-mark">⬡</span>
+      <span class="logo-text">Kanban</span>
+    </div>
+    <div class="board-title-wrap">
+      <h1 id="board-title" contenteditable="true" spellcheck="false" title="Clique para editar">Meu Projeto</h1>
+    </div>
+  </div>
+  <div class="header-center">
+    <div class="search-wrap">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Buscar cards…" autocomplete="off">
+      <button class="search-clear hidden" id="search-clear" title="Limpar">✕</button>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="btn btn-icon" id="btn-undo" title="Desfazer (Ctrl+Z)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+    </button>
+    <button class="btn btn-ghost" id="btn-import">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Importar
+    </button>
+    <button class="btn btn-ghost" id="btn-export">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Exportar
+    </button>
+    <button class="btn btn-primary" id="btn-add-column">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Coluna
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════════ FILTER BAR ═══════════════════ -->
+<div id="filter-bar">
+  <div class="filter-left">
+    <span class="filter-label">Filtrar</span>
+    <select id="filter-priority">
+      <option value="">Todas prioridades</option>
+      <option value="critical">🔴 Crítica</option>
+      <option value="high">🟠 Alta</option>
+      <option value="medium">🟡 Média</option>
+      <option value="low">🟢 Baixa</option>
+    </select>
+    <input type="text" id="filter-assignee" placeholder="Responsável…" class="filter-input">
+    <input type="text" id="filter-tag" placeholder="Tag…" class="filter-input">
+    <button class="btn btn-ghost btn-sm" id="btn-clear-filters">Limpar</button>
+  </div>
+  <div class="filter-right" id="stats-bar"><!-- JS --></div>
+</div>
+
+<!-- ═══════════════════ BOARD ═══════════════════ -->
+<main id="board"><!-- JS --></main>
+
+<!-- ═══════════════════ MODAL: CARD ═══════════════════ -->
+<div class="modal-overlay hidden" id="card-modal-overlay">
+  <div class="modal" id="card-modal">
+    <div class="modal-header">
+      <h2 id="card-modal-title">Novo Card</h2>
+      <button class="modal-close" id="card-modal-close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="card-input-title">Título <span class="required">*</span></label>
+          <input type="text" id="card-input-title" placeholder="Descreva a tarefa…">
+        </div>
+        <div class="form-group full">
+          <label for="card-input-desc">Descrição</label>
+          <textarea id="card-input-desc" rows="3" placeholder="Contexto, critérios de aceite, links…"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="card-input-column">Coluna</label>
+          <select id="card-input-column"></select>
+        </div>
+        <div class="form-group">
+          <label for="card-input-priority">Prioridade</label>
+          <select id="card-input-priority">
+            <option value="">— Sem prioridade —</option>
+            <option value="critical">🔴 Crítica</option>
+            <option value="high">🟠 Alta</option>
+            <option value="medium">🟡 Média</option>
+            <option value="low">🟢 Baixa</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="card-input-assignee">Responsável</label>
+          <input type="text" id="card-input-assignee" placeholder="Nome do responsável">
+        </div>
+        <div class="form-group">
+          <label for="card-input-duedate">Data limite</label>
+          <input type="date" id="card-input-duedate">
+        </div>
+        <div class="form-group full">
+          <label for="card-input-tags">Tags <small>(vírgula para separar)</small></label>
+          <input type="text" id="card-input-tags" placeholder="ex: ux, backend, urgente">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger hidden" id="card-btn-delete">Excluir card</button>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="card-btn-cancel">Cancelar</button>
+        <button class="btn btn-primary" id="card-btn-save">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MODAL: COLUMN ═══════════════════ -->
+<div class="modal-overlay hidden" id="col-modal-overlay">
+  <div class="modal modal-sm" id="col-modal">
+    <div class="modal-header">
+      <h2 id="col-modal-title">Nova Coluna</h2>
+      <button class="modal-close" id="col-modal-close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="col-input-title">Nome da coluna <span class="required">*</span></label>
+        <input type="text" id="col-input-title" placeholder="ex: Em Revisão">
+      </div>
+      <div class="form-group">
+        <label for="col-input-wip">Limite de WIP <small>(0 = sem limite)</small></label>
+        <input type="number" id="col-input-wip" min="0" value="0">
+      </div>
+      <div class="form-group">
+        <label>Cor da coluna</label>
+        <div class="color-picker-wrap">
+          <input type="color" id="col-input-color" value="#4a5568">
+          <div class="color-presets" id="color-presets"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger hidden" id="col-btn-delete">Excluir coluna</button>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="col-btn-cancel">Cancelar</button>
+        <button class="btn btn-primary" id="col-btn-save">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MODAL: IMPORT ═══════════════════ -->
+<div class="modal-overlay hidden" id="import-modal-overlay">
+  <div class="modal" id="import-modal">
+    <div class="modal-header">
+      <h2>Importar Dados</h2>
+      <button class="modal-close" id="import-modal-close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="dropzone" id="import-dropzone">
+        <div class="dropzone-icon">📂</div>
+        <p>Arraste um arquivo aqui ou <label for="import-file-input" class="link">clique para selecionar</label></p>
+        <input type="file" id="import-file-input" accept=".json,.csv" class="hidden">
+        <p class="dropzone-hint">Formatos aceitos: <strong>JSON</strong>, <strong>CSV</strong></p>
+      </div>
+      <div class="import-preview hidden" id="import-preview">
+        <div class="import-preview-header">
+          <span id="import-preview-name" class="mono"></span>
+          <button class="btn btn-ghost btn-sm" id="import-clear">✕ Remover</button>
+        </div>
+        <div id="import-preview-content" class="import-preview-body"></div>
+      </div>
+      <div class="import-options">
+        <p class="import-options-label">Modo de importação:</p>
+        <label class="radio-option">
+          <input type="radio" name="import-mode" value="replace" checked>
+          <span>Substituir todos os dados atuais</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="import-mode" value="merge">
+          <span>Mesclar com os dados existentes</span>
+        </label>
+      </div>
+      <div class="template-tip">
+        <span>Quer um modelo para preencher?</span>
+        <button class="btn btn-ghost btn-sm" id="btn-download-csv-template">⬇ Template CSV</button>
+        <button class="btn btn-ghost btn-sm" id="btn-download-json-template">⬇ Template JSON</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="import-btn-cancel">Cancelar</button>
+        <button class="btn btn-primary" id="import-btn-confirm" disabled>Importar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MODAL: EXPORT ═══════════════════ -->
+<div class="modal-overlay hidden" id="export-modal-overlay">
+  <div class="modal" id="export-modal">
+    <div class="modal-header">
+      <h2>Exportar Dados</h2>
+      <button class="modal-close" id="export-modal-close">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-subtitle">Escolha o formato:</p>
+      <div class="export-grid" id="export-grid">
+        <div class="export-card" data-format="json">
+          <div class="export-icon">💾</div>
+          <div class="export-info">
+            <div class="export-name">JSON <span class="badge badge-green">Recomendado</span></div>
+            <div class="export-desc">Backup completo e reimportável nesta ferramenta. Preserva colunas, cards e metadados.</div>
+          </div>
+        </div>
+        <div class="export-card" data-format="csv">
+          <div class="export-icon">📊</div>
+          <div class="export-info">
+            <div class="export-name">CSV <span class="badge badge-green">Recomendado</span></div>
+            <div class="export-desc">Tabela plana para Excel ou Google Sheets — filtre, ordene e crie gráficos de acompanhamento.</div>
+          </div>
+        </div>
+        <div class="export-card" data-format="xlsx">
+          <div class="export-icon">📋</div>
+          <div class="export-info">
+            <div class="export-name">Excel (.xlsx)</div>
+            <div class="export-desc">Planilha formatada com cabeçalhos e larguras ajustadas — abra diretamente no Excel.</div>
+          </div>
+        </div>
+        <div class="export-card" data-format="pdf">
+          <div class="export-icon">📄</div>
+          <div class="export-info">
+            <div class="export-name">PDF</div>
+            <div class="export-desc">Relatório visual estático — ideal para apresentações e snapshots de status.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF Smart Warning -->
+      <div class="pdf-warning hidden" id="pdf-warning">
+        <div class="pdf-warning-icon">⚠️</div>
+        <div class="pdf-warning-text">
+          <strong>PDF é estático — você não conseguirá atualizar ou reimportar depois.</strong>
+          <p>Para <em>acompanhamento ativo</em>, prefira <strong>CSV</strong> (Excel/Sheets) ou <strong>JSON</strong> (reimportável aqui).</p>
+          <div class="pdf-warning-btns">
+            <button class="btn btn-ghost btn-sm" id="pdf-warn-csv">Mudar para CSV</button>
+            <button class="btn btn-ghost btn-sm" id="pdf-warn-json">Mudar para JSON</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="export-settings">
+        <label class="checkbox-option">
+          <input type="checkbox" id="export-include-done" checked>
+          <span>Incluir cards da coluna "Concluído"</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" id="export-include-desc" checked>
+          <span>Incluir descrição dos cards</span>
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="export-btn-cancel">Cancelar</button>
+        <button class="btn btn-primary" id="export-btn-confirm">Baixar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ TOAST ═══════════════════ -->
+<div id="toast-container"></div>
+
+<!-- ═══════════════════ SCRIPTS (order matters) ═══════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/import.js"></script>
+<script src="js/export.js"></script>
+<script src="js/card.js"></script>
+<script src="js/board.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
